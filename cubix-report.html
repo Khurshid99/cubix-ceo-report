@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cubix — CEO Darajasidagi Tahlil</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface2: #22263a;
+      --border: #2e3347;
+      --accent: #4f8ef7;
+      --accent2: #7c5cfc;
+      --green: #2ecc71;
+      --red: #e74c3c;
+      --yellow: #f1c40f;
+      --orange: #e67e22;
+      --text: #e8eaf0;
+      --muted: #8b90a8;
+      --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* HEADER */
+    .hero {
+      background: linear-gradient(135deg, #1a1d27 0%, #0f1117 60%);
+      border-bottom: 1px solid var(--border);
+      padding: 60px 0 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -80px; left: 50%; transform: translateX(-50%);
+      width: 600px; height: 300px;
+      background: radial-gradient(ellipse, rgba(79,142,247,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-tag {
+      display: inline-block;
+      background: rgba(79,142,247,0.15);
+      border: 1px solid rgba(79,142,247,0.3);
+      color: var(--accent);
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+    .hero h1 {
+      font-size: 42px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      background: linear-gradient(90deg, #e8eaf0, #8b90a8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+    }
+    .hero-sub {
+      color: var(--muted);
+      font-size: 16px;
+      max-width: 560px;
+      margin: 0 auto 28px;
+    }
+    .hero-meta {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+    .hero-meta-item {
+      text-align: center;
+    }
+    .hero-meta-item .val {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .hero-meta-item .lbl {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* LAYOUT */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section {
+      padding: 56px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .section:last-child { border-bottom: none; }
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+    .section-desc {
+      color: var(--muted);
+      margin-bottom: 36px;
+      max-width: 640px;
+    }
+
+    /* VERDICT CARD */
+    .verdict-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .verdict-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .verdict-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .verdict-card.green::after { background: var(--green); }
+    .verdict-card.red::after { background: var(--red); }
+    .verdict-card.yellow::after { background: var(--yellow); }
+    .verdict-card .score {
+      font-size: 40px;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .verdict-card.green .score { color: var(--green); }
+    .verdict-card.red .score { color: var(--red); }
+    .verdict-card.yellow .score { color: var(--yellow); }
+    .verdict-card .label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .verdict-card .desc { font-size: 13px; color: var(--muted); }
+
+    /* STAT GRID */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .stat-card .val {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .stat-card .lbl {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* RISK TABLE */
+    .risk-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .risk-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 20px;
+      display: grid;
+      grid-template-columns: 36px 1fr auto;
+      align-items: start;
+      gap: 14px;
+    }
+    .risk-num {
+      width: 36px; height: 36px;
+      background: rgba(231,76,60,0.15);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 14px; color: var(--red);
+      flex-shrink: 0;
+    }
+    .risk-body .title { font-weight: 600; margin-bottom: 4px; }
+    .risk-body .detail { font-size: 13px; color: var(--muted); }
+    .badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+    .badge.high { background: rgba(231,76,60,0.2); color: var(--red); border: 1px solid rgba(231,76,60,0.3); }
+    .badge.med { background: rgba(241,196,15,0.15); color: var(--yellow); border: 1px solid rgba(241,196,15,0.25); }
+    .badge.low { background: rgba(46,204,113,0.15); color: var(--green); border: 1px solid rgba(46,204,113,0.25); }
+
+    /* KPI TABLE */
+    .kpi-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+    .kpi-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .kpi-block-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .kpi-block-header .icon {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px;
+    }
+    .icon.blue { background: rgba(79,142,247,0.15); }
+    .icon.purple { background: rgba(124,92,252,0.15); }
+    .kpi-block-header .name { font-weight: 700; font-size: 15px; }
+    .kpi-block-header .role { font-size: 12px; color: var(--muted); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    thead th {
+      background: var(--surface2);
+      padding: 10px 16px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--muted);
+    }
+    tbody td {
+      padding: 11px 16px;
+      font-size: 13px;
+      border-top: 1px solid var(--border);
+    }
+    tbody tr:hover { background: rgba(255,255,255,0.02); }
+    .w-pill {
+      display: inline-block;
+      background: rgba(79,142,247,0.15);
+      color: var(--accent);
+      border-radius: 6px;
+      padding: 2px 8px;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    /* ORG CHART */
+    .org-chart {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.9;
+      overflow-x: auto;
+    }
+    .org-node {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 13px;
+      font-family: var(--font);
+      margin: 2px 0;
+    }
+    .org-node.ceo { background: linear-gradient(135deg, rgba(79,142,247,0.25), rgba(124,92,252,0.25)); border: 1px solid rgba(79,142,247,0.4); color: #fff; }
+    .org-node.head { background: rgba(79,142,247,0.15); border: 1px solid rgba(79,142,247,0.25); color: var(--accent); }
+    .org-node.staff { background: var(--surface2); border: 1px solid var(--border); color: var(--text); }
+    .org-node.analyst { background: rgba(241,196,15,0.1); border: 1px solid rgba(241,196,15,0.3); color: var(--yellow); }
+    .org-line { color: var(--muted); font-family: monospace; }
+
+    /* ACCOUNTABILITY CHAIN */
+    .chain {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .chain-step {
+      flex: 1;
+      padding: 20px 18px;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      position: relative;
+    }
+    .chain-step:last-child { border-right: none; }
+    .chain-step::after {
+      content: '→';
+      position: absolute;
+      right: -12px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: 18px;
+      z-index: 1;
+    }
+    .chain-step:last-child::after { display: none; }
+    .chain-step .step-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .chain-step .step-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .chain-step .step-desc {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* ACTION PLAN */
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .action-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 20px;
+      display: grid;
+      grid-template-columns: 28px 1fr auto;
+      align-items: start;
+      gap: 14px;
+    }
+    .action-num {
+      width: 28px; height: 28px;
+      background: rgba(79,142,247,0.15);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 12px; color: var(--accent);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .action-body .title { font-weight: 600; margin-bottom: 3px; }
+    .action-body .detail { font-size: 13px; color: var(--muted); }
+    .tag-time {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+    .tag-time.now { background: rgba(231,76,60,0.15); color: var(--red); border: 1px solid rgba(231,76,60,0.2); }
+    .tag-time.q1 { background: rgba(230,126,34,0.15); color: var(--orange); border: 1px solid rgba(230,126,34,0.2); }
+    .tag-time.q2 { background: rgba(79,142,247,0.15); color: var(--accent); border: 1px solid rgba(79,142,247,0.2); }
+
+    /* FORMULA BLOCK */
+    .formula {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px 20px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      margin: 16px 0;
+      line-height: 1.8;
+    }
+
+    /* CALLOUT */
+    .callout {
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin: 20px 0;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .callout.warn { background: rgba(241,196,15,0.08); border: 1px solid rgba(241,196,15,0.2); }
+    .callout.danger { background: rgba(231,76,60,0.08); border: 1px solid rgba(231,76,60,0.2); }
+    .callout.info { background: rgba(79,142,247,0.08); border: 1px solid rgba(79,142,247,0.2); }
+    .callout-icon { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+    .callout-body .title { font-weight: 700; margin-bottom: 4px; }
+    .callout-body .desc { font-size: 13px; color: var(--muted); }
+
+    /* FOOTER */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 32px 0;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    footer strong { color: var(--text); }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 28px; }
+      .verdict-grid { grid-template-columns: 1fr; }
+      .stat-grid { grid-template-columns: 1fr 1fr; }
+      .kpi-section { grid-template-columns: 1fr; }
+      .chain { flex-direction: column; }
+      .chain-step::after { content: '↓'; right: auto; left: 50%; bottom: -12px; top: auto; transform: translateX(-50%); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="container">
+    <div class="hero-tag">CEO Darajasidagi Tahlil</div>
+    <h1>Cubix Beton Zavodi</h1>
+    <p class="hero-sub">Moliyaviy model, operatsion risklarlar, KPI tizimi va harakatlar rejasi — to'liq tahlil</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <div class="val">62.85B</div>
+        <div class="lbl">UZS Daromad (14 oy)</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="val">17.7%</div>
+        <div class="lbl">Haqiqiy Gross Margin</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="val">96,612</div>
+        <div class="lbl">m³ Beton Ishlab chiqarish</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="val">2026</div>
+        <div class="lbl">Tahlil Yili</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 1: VERDICT -->
+<div class="section">
+  <div class="container">
+    <div class="section-label">Umumiy Baho</div>
+    <div class="section-title">CEO Xulosasi</div>
+    <p class="section-desc">Bu biznes ishlamoqda — lekin ko'r-ko'rona. Daromad bor, bozor bor. Muammo modelda emas, boshqaruvda.</p>
+    <div class="verdict-grid">
+      <div class="verdict-card green">
+        <div class="score">6/10</div>
+        <div class="label">Biznes Model</div>
+        <div class="desc">Beton B2B qurilish bozorida doimiy talab. Ishlab chiqarish mexanizmi ishlaydi.</div>
+      </div>
+      <div class="verdict-card red">
+        <div class="score">3/10</div>
+        <div class="label">Boshqaruv Sifati</div>
+        <div class="desc">Moliyaviy ko'rlik. Eganing shaxsiy xarajatlari kompaniyadan. Nazorat tizimi yo'q.</div>
+      </div>
+      <div class="verdict-card yellow">
+        <div class="score">Yuqori</div>
+        <div class="label">Risk Darajasi</div>
+        <div class="desc">Bitta tashqi zarba yetarli — yetkazib beruvchi, mijoz, yoki kalit xodim.</div>
+      </div>
+    </div>
+
+    <div class="callout danger">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-body">
+        <div class="title">Asosiy muammo</div>
+        <div class="desc">P&L modelidagi formulalar ishlamaydi (5.10683e+18 xato). Kompaniya o'z daromadlilигини bilmaydi. Bu CEO uchun o'lik nuqta.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 2: FINANCIALS -->
+<div class="section">
+  <div class="container">
+    <div class="section-label">Moliyaviy Ko'rsatkichlar</div>
+    <div class="section-title">Haqiqiy Raqamlar</div>
+    <p class="section-desc">P&L formulalari buziq bo'lganligi sababli Kassa tranzaksiyalaridan qayta hisoblandi.</p>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="val">62.85B</div>
+        <div class="lbl">Jami Daromad (UZS)</div>
+      </div>
+      <div class="stat-card">
+        <div class="val">38.72B</div>
+        <div class="lbl">Xom Ashyo Xarajati</div>
+      </div>
+      <div class="stat-card">
+        <div class="val">8.75B</div>
+        <div class="lbl">Tashqi Transport (Oral Mix)</div>
+      </div>
+      <div class="stat-card">
+        <div class="val">~10.44B</div>
+        <div class="lbl">Haqiqiy Gross Foyda</div>
+      </div>
+    </div>
+
+    <div class="callout warn">
+      <div class="callout-icon">📊</div>
+      <div class="callout-body">
+        <div class="title">Margin taqqoslash</div>
+        <div class="desc">Cubix haqiqiy margin: <strong>17.7%</strong> &nbsp;|&nbsp; Sanoat benchmarki: <strong>25–35%</strong> &nbsp;|&nbsp; Farq: −7 dan −17 punktgacha. Bu margin bilan investitsiya qaytmaydi.</div>
+      </div>
+    </div>
+
+    <table style="margin-top:20px; background:var(--surface); border-radius:10px; overflow:hidden; border:1px solid var(--border);">
+      <thead>
+        <tr>
+          <th>Kategoriya</th>
+          <th>Miqdor (UZS)</th>
+          <th>Izoh</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Daromad</td><td>62.85 milliard</td><td>~$4.87M, 14 oy</td></tr>
+        <tr><td>Xom ashyo</td><td>38.72 milliard</td><td>61.6% daromaddan</td></tr>
+        <tr><td>Transport (Oral Mix)</td><td>8.75 milliard</td><td>Tegishli tomon?</td></tr>
+        <tr><td>Yoqilg'i</td><td>1.15 milliard</td><td>O'z transport</td></tr>
+        <tr><td>Gross foyda</td><td>~10.44 milliard</td><td>17.7% margin</td></tr>
+        <tr><td>Ish haqi qarzi</td><td>2.2 milliard</td><td>8.5x o'sdi — to'lanmagan</td></tr>
+        <tr><td>Debitorlik (NOVOGET)</td><td>2.05 milliard</td><td>Jami debitorlikning 27%</td></tr>
+        <tr><td>Kreditor (Oltin-qum)</td><td>2.97 milliard</td><td>Asosiy yetkazib beruvchi</td></tr>
+        <tr><td>Ega kvartira (barter)</td><td>1.07 milliard</td><td>"Fin zaym" sifatida yozilgan</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- SECTION 3: RISKS -->
+<div class="section">
+  <div class="container">
+    <div class="section-label">Tanqidiy Tahlil</div>
+    <div class="section-title">6 ta Asosiy Risk</div>
+    <p class="section-desc">Bulardan bittasi yuzaga kelsa — kompaniya qiyinchiliklarga tushadi. Ikkitasi bir vaqtda — inqiroz.</p>
+
+    <div class="risk-list">
+      <div class="risk-item">
+        <div class="risk-num">1</div>
+        <div class="risk-body">
+          <div class="title">Moliyaviy Ko'rlik</div>
+          <div class="detail">P&L Excel formulalari ishlamaydi (circular reference). Tannarx hisoblash mumkin emas. Kompaniya foydali yoki zararli ekanini bilmaydi.</div>
+        </div>
+        <div class="badge high">Kritik</div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-num">2</div>
+        <div class="risk-body">
+          <div class="title">Egalik Muammosi</div>
+          <div class="detail">1.07 milliard so'm kvartira ta'miri "moliyaviy zaym" sifatida yozilgan. Dividendlar olindi, ishchilar maoshi to'lanmadi (2.2B qarzi). Soliq tekshiruvida birinchi ko'rinadi.</div>
+        </div>
+        <div class="badge high">Kritik</div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-num">3</div>
+        <div class="risk-body">
+          <div class="title">Yetkazib beruvchi Monopoliyasi</div>
+          <div class="detail">Oltin-qum-manbai — bitta manbai. Kompaniyaga 2.97 milliard kredit bergan. Kredit to'xtatilsa — ishlab chiqarish to'xtaydi. Muzokarа kuchi nolga teng.</div>
+        </div>
+        <div class="badge high">Kritik</div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-num">4</div>
+        <div class="risk-body">
+          <div class="title">Mijoz Konsentratsiyasi</div>
+          <div class="detail">NOVOGET debitorlikning 27%ini ushlab turibdi (2.05 milliard). To'lamasа — kassa jarohati. Bitta mijozga bu qadar bog'liqlik — biznes risk.</div>
+        </div>
+        <div class="badge high">Yuqori</div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-num">5</div>
+        <div class="risk-body">
+          <div class="title">Kalit Xodim Riski</div>
+          <div class="detail">Maxkamov — sotuv bo'limining 46%ini qilmoqda. Ketsa — daromad darhol tushadi. Bitta odamga bu qadar bog'liqlik ixtiyoriy emas, baxtsizlik.</div>
+        </div>
+        <div class="badge med">O'rta</div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-num">6</div>
+        <div class="risk-body">
+          <div class="title">Oral Mix Shaffoflik Muammosi</div>
+          <div class="detail">8.75 milliard tashqi transportga to'langan. Deyarli barcha mikserlar "Oral Mix" nomiga. Tegishli tomon bitimi bo'lsa — nazorat qilinmagan pul oqimi.</div>
+        </div>
+        <div class="badge med">O'rta</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 4: ORG CHART -->
+<div class="section">
+  <div class="container">
+    <div class="section-label">Tashkiliy Tuzilma</div>
+    <div class="section-title">Orgstruktura va Mas'uliyat</div>
+    <p class="section-desc">Hozirgi holat va tavsiya etilgan tuzilma. Analitik — KPI tizimining ko'zi.</p>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
+      <div>
+        <p style="font-size:12px; color:var(--muted); margin-bottom:12px; text-transform:uppercase; letter-spacing:1px; font-weight:700;">Hozirgi Holat</p>
+        <div class="org-chart">
+<span class="org-node ceo">CEO / Ega</span>
+<br><span class="org-line">│</span>
+<br><span class="org-line">├── </span><span class="org-node head">ROP (Savdo boshlig'i)</span>
+<br><span class="org-line">│&nbsp;&nbsp;&nbsp;├── </span><span class="org-node staff">Maxkamov (46% sotuv)</span>
+<br><span class="org-line">│&nbsp;&nbsp;&nbsp;└── </span><span class="org-node staff">Boshqa menejerlar</span>
+<br><span class="org-line">│</span>
+<br><span class="org-line">├── </span><span class="org-node head">Ishlab chiqarish</span>
+<br><span class="org-line">├── </span><span class="org-node head">Bosh Buxgalter</span>
+<br><span class="org-line">└── </span><span class="org-node head">Logistika / Dispetcher</span>
+<br><br><span style="color:var(--red); font-size:12px;">✗ Analitik yo'q</span>
+        </div>
+      </div>
+      <div>
+        <p style="font-size:12px; color:var(--muted); margin-bottom:12px; text-transform:uppercase; letter-spacing:1px; font-weight:700;">Tavsiya Etilgan</p>
+        <div class="org-chart">
+<span class="org-node ceo">CEO / Ega</span>
+<br><span class="org-line">│</span>
+<br><span class="org-line">├── </span><span class="org-node head">ROP</span><span class="org-line"> ──────────────┐</span>
+<br><span class="org-line">│&nbsp;&nbsp;&nbsp;├── </span><span class="org-node staff">Menejer 1</span><span class="org-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│</span>
+<br><span class="org-line">│&nbsp;&nbsp;&nbsp;└── </span><span class="org-node staff">Menejer 2, 3</span><span class="org-line">&nbsp;&nbsp;&nbsp;&nbsp;▼</span>
+<br><span class="org-line">│</span>
+<br><span class="org-line">├── </span><span class="org-node head">CFO</span><span class="org-line"> ──── </span><span class="org-node analyst">ANALITIK</span>
+<br><span class="org-line">│&nbsp;&nbsp;&nbsp;└── </span><span class="org-node staff">Buxgalter</span><span class="org-line">&nbsp;&nbsp;&nbsp;│</span>
+<br><span class="org-line">│</span><span class="org-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│</span>
+<br><span class="org-line">├── </span><span class="org-node head">Ishlab chiqarish</span><span class="org-line">─┘</span>
+<br><span class="org-line">└── </span><span class="org-node head">Logistika</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout info" style="margin-top:24px;">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body">
+        <div class="title">Analitikнинг roli</div>
+        <div class="desc">Analitik — raqamning to'g'riligini kafolatlovchi. KPI tizimi faqat ma'lumot to'g'ri bo'lganda ishlaydi. Analitik bo'lmasa Board ham, CEO ham quruq raqam bilan ishlaydi.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 5: KPI SYSTEM -->
+<div class="section">
+  <div class="container">
+    <div class="section-label">KPI Tizimi</div>
+    <div class="section-title">Kim Nimaga Javobgar</div>
+    <p class="section-desc">KPI osmondан olinmaydi. Analitik tarixiy ma'lumot, bozor sig'imi va ishlab chiqarish cheklovlaridan hisoblaydi — Board tasdiqlaydi.</p>
+
+    <div class="kpi-section">
+      <div class="kpi-block">
+        <div class="kpi-block-header">
+          <div class="icon blue">👔</div>
+          <div>
+            <div class="name">ROP — Savdo Bo'limi Boshlig'i</div>
+            <div class="role">Bo'lim natijasi uchun javobgar</div>
+          </div>
+        </div>
+        <table>
+          <thead><tr><th>KPI</th><th>Og'irlik</th><th>Maqsad</th></tr></thead>
+          <tbody>
+            <tr><td>Bo'lim daromadi</td><td><span class="w-pill">35%</span></td><td>CEO rejasiga nisbatan</td></tr>
+            <tr><td>Debitorlik (o'rtacha kun)</td><td><span class="w-pill">25%</span></td><td>≤ 30 kun</td></tr>
+            <tr><td>Komanda plan %</td><td><span class="w-pill">20%</span></td><td>Nechta menejer planini bajardi</td></tr>
+            <tr><td>Yangi mijozlar (bo'lim)</td><td><span class="w-pill">20%</span></td><td>Konsentratsiyani kamaytirish</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="kpi-block">
+        <div class="kpi-block-header">
+          <div class="icon purple">🧑‍💼</div>
+          <div>
+            <div class="name">Savdo Menejer</div>
+            <div class="role">O'z portfeli uchun javobgar</div>
+          </div>
+        </div>
+        <table>
+          <thead><tr><th>KPI</th><th>Og'irlik</th><th>Maqsad</th></tr></thead>
+          <tbody>
+            <tr><td>Sotuv hajmi</td><td><span class="w-pill">40%</span></td><td>Asosiy metrika</td></tr>
+            <tr><td>Debitorlik inkassatsiyasi</td><td><span class="w-pill">30%</span></td><td>Pul kelishini ta'minlash</td></tr>
+            <tr><td>Yangi mijozlar soni</td><td><span class="w-pill">20%</span></td><td>Portfel kengaytirish</td></tr>
+            <tr><td>Mahsulot mixi (M400+)</td><td><span class="w-pill">10%</span></td><td>Yuqori marginal mahsulot</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="formula">
+      <strong style="color:var(--accent)">Bonus formula (savdo menejer):</strong><br>
+      100% plan → bonus = maoshning <strong>30%</strong><br>
+      80–99%  plan → bonus = maoshning <strong>15%</strong><br>
+      60–79%  plan → bonus = <strong>0</strong><br>
+      &lt; 60%  plan → ogohlantirish<br>
+      <br>
+      <strong style="color:var(--red)">Qattiq qoida:</strong> Menejer mijozida 60+ kunlik qarz bo'lsa → o'sha oy bonusi muzlatiladi.
+    </div>
+
+    <!-- KPI SETTING CHAIN -->
+    <p style="font-size:13px; font-weight:700; margin:28px 0 14px; color:var(--muted); text-transform:uppercase; letter-spacing:1px;">KPI Qo'yish Zanjiri</p>
+    <div class="chain">
+      <div class="chain-step">
+        <div class="step-label">1-Qadam</div>
+        <div class="step-title">Analitik</div>
+        <div class="step-desc">Tarixiy ma'lumot tahlili. Bozor sig'imi. Ishlab chiqarish cheklovi. Realistik maqsad modeli.</div>
+      </div>
+      <div class="chain-step">
+        <div class="step-label">2-Qadam</div>
+        <div class="step-title">CFO</div>
+        <div class="step-desc">Margin chegarasi belgilaydi. Narx chegirma limiti. Kassa ta'siri hisob-kitobi.</div>
+      </div>
+      <div class="chain-step">
+        <div class="step-label">3-Qadam</div>
+        <div class="step-title">CEO / Board</div>
+        <div class="step-desc">Strategik maqsadni tasdiqlaydi. Raqam asoslanganligini tekshiradi. Imzolaydi.</div>
+      </div>
+      <div class="chain-step">
+        <div class="step-label">4-Qadam</div>
+        <div class="step-title">ROP</div>
+        <div class="step-desc">Bo'lim planini menajerlarga taqsimlaydi. Individual KPI tuzadi. Oylik nazorat qiladi.</div>
+      </div>
+      <div class="chain-step">
+        <div class="step-label">5-Qadam</div>
+        <div class="step-title">Analitik</div>
+        <div class="step-desc">Oylik bajarish hisoboti. Ma'lumot to'g'riligini kafolatlaydi. Og'ishlar bo'yicha signal.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 6: CEO ACCOUNTABILITY -->
+<div class="section">
+  <div class="container">
+    <div class="section-label">CEO Nazorati</div>
+    <div class="section-title">Kim CEOni Tekshiradi?</div>
+    <p class="section-desc">Savdo menejerning bonusini to'g'ri hisoblaysiz, lekin CEO kassadan olib ketadi. Nazorat mexanizmi bo'lmasa qolgan hamma narsa dekoratsiya.</p>
+
+    <table style="background:var(--surface); border-radius:10px; overflow:hidden; border:1px solid var(--border);">
+      <thead>
+        <tr>
+          <th>CEO KPI</th>
+          <th>Maqsad</th>
+          <th>Kim tekshiradi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Umumiy daromad</td><td>+35% yillik</td><td>Kengash / Auditor</td></tr>
+        <tr><td>Sof margin</td><td>22%+</td><td>CFO hisoboti</td></tr>
+        <tr><td>Debitorlik (o'rtacha kun)</td><td>≤ 30 kun</td><td>Bosh buxgalter</td></tr>
+        <tr><td>Ish haqi qarzi</td><td>0</td><td>Bosh buxgalter</td></tr>
+        <tr><td>Yangi mijozlar ulushi</td><td>30%+</td><td>ROP hisoboti</td></tr>
+        <tr><td style="color:var(--red);">Shaxsiy xarajatlar kompaniyadan</td><td style="color:var(--red);">0</td><td>Tashqi auditor</td></tr>
+      </tbody>
+    </table>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-top:24px;">
+      <div class="stat-card">
+        <div style="font-size:20px; margin-bottom:8px;">📋</div>
+        <div class="val" style="font-size:16px; color:var(--green);">Oylik Dashboard</div>
+        <div class="lbl" style="margin-top:6px;">P&L, kassa, debitorlik — haqiqiy raqamlar. Har oy 1-gacha.</div>
+      </div>
+      <div class="stat-card">
+        <div style="font-size:20px; margin-bottom:8px;">🤝</div>
+        <div class="val" style="font-size:16px; color:var(--yellow);">Choraklik Ko'rib chiqish</div>
+        <div class="lbl" style="margin-top:6px;">Reja vs haqiqat. 2–3 tajribali odam. Har 3 oyda.</div>
+      </div>
+      <div class="stat-card">
+        <div style="font-size:20px; margin-bottom:8px;">🔍</div>
+        <div class="val" style="font-size:16px; color:var(--accent);">Yillik Audit</div>
+        <div class="lbl" style="margin-top:6px;">Tashqi buxgalter. Shaxsiy va kompaniya pullari aralashmasligi.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 7: ACTION PLAN -->
+<div class="section">
+  <div class="container">
+    <div class="section-label">Harakatlar Rejasi</div>
+    <div class="section-title">Nima Qilish Kerak</div>
+    <p class="section-desc">Tartib muhim: birinchi moliyaviy intizom, keyin o'sish.</p>
+
+    <div class="actions">
+      <div class="action-item">
+        <div class="action-num">1</div>
+        <div class="action-body">
+          <div class="title">P&L modelini qayta qurish</div>
+          <div class="detail">Excel formulalari emas — haqiqiy hisobot. Kassa kategoriyalarini standartlashtirish. "Fin zaym" ni tugatish — har bir tranzaksiya aniq kategoriyaga.</div>
+        </div>
+        <div class="tag-time now">Hozir</div>
+      </div>
+      <div class="action-item">
+        <div class="action-num">2</div>
+        <div class="action-body">
+          <div class="title">Ish haqi qarzini to'lash grafigi</div>
+          <div class="detail">2.2 milliard. Bir zumda to'lanmaydi — lekin 6 oylik jadval tuzilishi kerak. Ishchilar bilishi kerak. Yuridik risk oldini olish.</div>
+        </div>
+        <div class="tag-time now">Hozir</div>
+      </div>
+      <div class="action-item">
+        <div class="action-num">3</div>
+        <div class="action-body">
+          <div class="title">NOVOGET dan 2.05 milliardni undirish</div>
+          <div class="detail">Bu kompaniyaning puli boshqa kompaniyada. Rasmiy talab xati. 30 kun muddati. Menejer shaxsiy javobgar.</div>
+        </div>
+        <div class="tag-time now">Hozir</div>
+      </div>
+      <div class="action-item">
+        <div class="action-num">4</div>
+        <div class="action-body">
+          <div class="title">Analitik yollash</div>
+          <div class="detail">KPI tizimi ma'lumot to'g'ri bo'lgandagina ishlaydi. Analitik — CFO ostida, barcha bo'limlarga kirish huquqi bilan. Bu eng katta ROI yollash.</div>
+        </div>
+        <div class="tag-time q1">1-Chorak</div>
+      </div>
+      <div class="action-item">
+        <div class="action-num">5</div>
+        <div class="action-body">
+          <div class="title">Oral Mix bilan shartnomani ochiqlashtirish</div>
+          <div class="detail">8.75 milliard to'langan. Narxlar bozor narxiga mosmi — tekshirish. Agar tegishli tomon bo'lsa — shaffof shartnoma yoki raqobatchi variantlar ko'rish.</div>
+        </div>
+        <div class="tag-time q1">1-Chorak</div>
+      </div>
+      <div class="action-item">
+        <div class="action-num">6</div>
+        <div class="action-body">
+          <div class="title">Ikkinchi yetkazib beruvchi bilan muzokaralar</div>
+          <div class="detail">Oltin-qum-manbai monopoliyasi — ekzistensial risk. Hatto 20% xom ashyoni ikkinchi manbadan olish muzokarа kuchini sezilarli oshiradi.</div>
+        </div>
+        <div class="tag-time q1">1-Chorak</div>
+      </div>
+      <div class="action-item">
+        <div class="action-num">7</div>
+        <div class="action-body">
+          <div class="title">Maxkamov ulushini 30% ga tushirish</div>
+          <div class="detail">Hozir 46%. 6 oy ichida yangi menejerlar yetishtirib, uning ulushini 30% ga tushirish. Bu Maxkamovni ishdan bo'shatish emas — kompaniyani mustahkamlash.</div>
+        </div>
+        <div class="tag-time q2">2-Chorak</div>
+      </div>
+      <div class="action-item">
+        <div class="action-num">8</div>
+        <div class="action-body">
+          <div class="title">Chegirma vakolati qoidasi</div>
+          <div class="detail">ROP: 5% gacha chegirma o'zi bera oladi. 5–10%: CEO ruxsati. 10%+: berilmaydi. Hozir bu qoida yo'q — margin 17.7% da qolib ketgan sababi shu.</div>
+        </div>
+        <div class="tag-time q2">2-Chorak</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <strong>Cubix Beton Zavodi</strong> — CEO Darajasidagi Tahlil &nbsp;|&nbsp;
+    Tahlil sanasi: Aprel 2026 &nbsp;|&nbsp;
+    Ma'lumot manbayi: Fin model Cubix.xlsx + Svod.xlsx
+  </div>
+</footer>
+
+</body>
+</html>
